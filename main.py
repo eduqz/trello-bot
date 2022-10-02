@@ -1,21 +1,23 @@
 import discord
+from discord.ext import commands
 from decouple import config
+
 
 TOKEN = config('TOKEN')
 
-client = discord.Client(intents=discord.Intents.default())
+intents = discord.Intents.all()
 
-@client.event
+bot = commands.Bot(command_prefix='!',intents=intents)
+
+@bot.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
+    print('We have logged in as {0.user}'.format(bot))
 
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
+@bot.command(name='bug_front')
+async def add_task(ctx):
+    
+    response = 'task adicionada'
 
-    if message.content.startswith('!test'):
-        await message.channel.send('this is a test')
+    await ctx.send(response)
 
-
-client.run(TOKEN)
+bot.run(TOKEN)
